@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Stage 3: Decision</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0d1117;
+            padding: 50px 70px;
+            box-sizing: border-box;
+        }
+
+        /* Background Pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            background-image:
+                linear-gradient(rgba(48, 54, 61, 0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(48, 54, 61, 0.5) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        /* Accent Gradient for this stage (Purple for Decision/Logic) */
+        .stage-accent-bg {
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(163, 113, 247, 0.1) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .section-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            color: #a371f7;
+            /* Stage 3 Color - Purple */
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: inline-block;
+            background-color: rgba(163, 113, 247, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(163, 113, 247, 0.2);
+        }
+
+        .main-title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stage-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 40px;
+            color: rgba(255, 255, 255, 0.1);
+            font-weight: 700;
+        }
+
+        /* Main Content Layout */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            gap: 40px;
+            flex: 1;
+            height: 100%;
+        }
+
+        /* Left Column: Explanation */
+        .col-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-right: 20px;
+        }
+
+        .concept-block {
+            margin-bottom: 30px;
+        }
+
+        .concept-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #f0f6fc;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .concept-icon {
+            color: #a371f7;
+            font-size: 24px;
+        }
+
+        .concept-desc {
+            font-size: 16px;
+            color: #8b949e;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            padding: 16px;
+            border-radius: 8px;
+            transition: border-color 0.2s;
+        }
+
+        .feature-item:hover {
+            border-color: #a371f7;
+        }
+
+        .item-icon {
+            color: #a371f7;
+            margin-top: 2px;
+            font-size: 16px;
+        }
+
+        .item-content h4 {
+            color: #e6edf3;
+            font-size: 16px;
+            margin: 0 0 4px 0;
+            font-weight: 600;
+        }
+
+        .item-content p {
+            color: #8b949e;
+            font-size: 13px;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Right Column: Code & Specs */
+        .col-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        /* Code Window */
+        .code-window {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .window-header {
+            background-color: #161b22;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .window-dots {
+            display: flex;
+            gap: 6px;
+            margin-right: 16px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot-red {
+            background-color: #ff7b72;
+        }
+
+        .dot-yellow {
+            background-color: #d29922;
+        }
+
+        .dot-green {
+            background-color: #3fb950;
+        }
+
+        .window-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: #8b949e;
+        }
+
+        .code-content {
+            padding: 20px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #c9d1d9;
+            background-color: #0d1117;
+        }
+
+        /* Syntax Highlighting */
+        .token-key {
+            color: #79c0ff;
+        }
+
+        /* Blue */
+        .token-string {
+            color: #a5d6ff;
+        }
+
+        /* Light Blue */
+        .token-number {
+            color: #d2a8ff;
+        }
+
+        /* Purple */
+        .token-bool {
+            color: #ff7b72;
+        }
+
+        /* Red */
+        .token-comment {
+            color: #8b949e;
+            font-style: italic;
+        }
+
+        /* Network Specs Grid */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .spec-card {
+            background-color: rgba(22, 27, 34, 0.8);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+
+        .spec-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: #8b949e;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .spec-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 15px;
+            color: #f0f6fc;
+            font-weight: 600;
+        }
+
+        .highlight-value {
+            color: #a371f7;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <div class="stage-accent-bg"></div>
+        <div class="header">
+            <div class="header-content">
+                <span class="section-tag">The "Gatekeeper"</span>
+                <h1 class="main-title">
+                    Stage 3: Decision
+                </h1>
+            </div>
+            <div class="stage-number">03</div>
+        </div>
+        <div class="content-wrapper">
+            <!-- Left Panel: Explanation -->
+            <div class="col-left">
+                <div class="concept-block">
+                    <h2 class="concept-title">
+                        <i class="fa-solid fa-gavel concept-icon"></i>
+                        Accept / Reject Logic
+                    </h2>
+                    <p class="concept-desc">
+                        Security is paramount. The connection is established but effectively "frozen" until the receiver
+                        explicitly authorizes the transfer. This prevents unsolicited files from flooding the disk.
+                    </p>
+                </div>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <i class="fa-solid fa-pause item-icon"></i>
+                        <div class="item-content">
+                            <h4>Connection Holding</h4>
+                            <p>The TCP socket stays open in a read-wait state. No file data is transferred until an
+                                affirmative response is sent.</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <i class="fa-regular fa-window-restore item-icon"></i>
+                        <div class="item-content">
+                            <h4>User Prompt (UI Toast)</h4>
+                            <p>Receiver sees a non-blocking toast: "Sameer wants to send 'Video.mp4' (2GB). Accept?"</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <i class="fa-solid fa-check-double item-icon"></i>
+                        <div class="item-content">
+                            <h4>Explicit Confirmation</h4>
+                            <p>Clicking "Accept" triggers the JSON response. "Reject" immediately terminates the TCP
+                                connection.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- Right Panel: Technical Details -->
+            <div class="col-right">
+                <!-- Code Window -->
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-dots">
+                            <div class="dot dot-red"></div>
+                            <div class="dot dot-yellow"></div>
+                            <div class="dot dot-green"></div>
+                        </div>
+                        <span class="window-title">response_payload.json</span>
+                    </div>
+                    <div class="code-content">
+                        <span class="token-comment">// Receiver sends this back to Sender</span>
+                        {
+                        <span class="token-key">"id"</span>: <span
+                            class="token-string">"550e8400-e29b-41d4-a716-446655440000"</span>,
+                        <span class="token-key">"accept"</span>: <span class="token-bool">true</span>,
+                        <span class="token-key">"dest_path"</span>: <span
+                            class="token-string">"/Users/Downloads/"</span>,
+                        <span class="token-key">"timestamp"</span>: <span class="token-number">1678901245</span>
+                        }
+                    </div>
+                </div>
+                <!-- Specs Grid -->
+                <div class="specs-grid">
+                    <div class="spec-card">
+                        <div class="spec-label">Mechanism</div>
+                        <div class="spec-value highlight-value">JSON over TCP</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-label">Time Limit</div>
+                        <div class="spec-value">30s Timeout</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-label">Interaction</div>
+                        <div class="spec-value">Manual Approval</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-label">Response Size</div>
+                        <div class="spec-value">&lt; 200 Bytes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

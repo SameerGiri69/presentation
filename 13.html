@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Key Technical Highlights</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 30px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Background Pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 0L1 40' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3Cpath d='M0 1L40 1' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .section-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            color: #2f81f7;
+            /* GitHub Blue */
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: inline-block;
+            background-color: rgba(47, 129, 247, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(47, 129, 247, 0.2);
+        }
+
+        .main-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Grid Layout */
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 20px;
+            flex: 1;
+            min-height: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, border-color 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: #58a6ff;
+            transform: translateY(-2px);
+        }
+
+        .card-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f0f6fc;
+            margin: 0 0 8px 0;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: #8b949e;
+            line-height: 1.5;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .metric-box {
+            margin-top: 16px;
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .metric-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 700;
+            font-size: 20px;
+            color: #e6edf3;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: #8b949e;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Specific Card Accents */
+        .accent-blue {
+            background-color: rgba(56, 139, 253, 0.15);
+            color: #58a6ff;
+        }
+
+        .accent-green {
+            background-color: rgba(63, 185, 80, 0.15);
+            color: #3fb950;
+        }
+
+        .accent-purple {
+            background-color: rgba(163, 113, 247, 0.15);
+            color: #a371f7;
+        }
+
+        .accent-orange {
+            background-color: rgba(210, 153, 34, 0.15);
+            color: #d29922;
+        }
+
+        .accent-red {
+            background-color: rgba(255, 123, 114, 0.15);
+            color: #ff7b72;
+        }
+
+        .text-blue {
+            color: #58a6ff;
+        }
+
+        .text-green {
+            color: #3fb950;
+        }
+
+        .text-purple {
+            color: #a371f7;
+        }
+
+        .text-orange {
+            color: #d29922;
+        }
+
+        .text-red {
+            color: #ff7b72;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 60px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /* Badge */
+        .tech-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #c9d1d9;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <span class="section-tag">Performance &amp; Design</span>
+                <h1 class="main-title">
+                    Key Technical Highlights
+                </h1>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <div style="text-align: right;">
+                    <p style="font-size: 12px; color: #8b949e; margin: 0;">LANGUAGE</p>
+                    <p style="font-family: 'IBM Plex Mono', monospace; color: #f0f6fc; margin: 0;">Go 1.21+</p>
+                </div>
+            </div>
+        </div>
+        <!-- Content Grid -->
+        <div class="highlights-grid">
+            <!-- Card 1: Minimal Dependencies -->
+            <div class="card">
+                <div class="card-icon-wrapper accent-blue">
+                    <i class="fa-solid fa-cubes-stacked"></i>
+                </div>
+                <h3 class="card-title">Minimal Dependencies</h3>
+                <p class="card-desc">
+                    Built with a "standard library first" philosophy. Only essential external packages are used to keep
+                    the binary small and secure.
+                </p>
+                <div class="metric-box">
+                    <span class="metric-label">Binary Size</span>
+                    <span class="metric-value text-blue">&lt; 15 MB</span>
+                </div>
+            </div>
+            <!-- Card 2: Memory Efficiency -->
+            <div class="card">
+                <div class="card-icon-wrapper accent-green">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+                <h3 class="card-title">Stable Memory Usage</h3>
+                <p class="card-desc">
+                    Fixed 64KB chunk buffer ensures RAM usage remains constant regardless of file size (1MB vs 10GB).
+                </p>
+                <div class="chart-container">
+                    <canvas id="memoryChart"></canvas>
+                </div>
+                <p style="font-size: 10px; color: #8b949e; text-align: center; margin-top: 5px;">RAM Usage vs File Size
+                </p>
+            </div>
+            <!-- Card 3: Lightweight Frontend -->
+            <div class="card">
+                <div class="card-icon-wrapper accent-orange">
+                    <i class="fa-brands fa-js"></i>
+                </div>
+                <h3 class="card-title">Vanilla JS Frontend</h3>
+                <p class="card-desc">
+                    Zero frameworks (No React/Vue). Pure HTML/CSS/JS for instant load times and minimal browser
+                    overhead.
+                </p>
+                <div class="metric-box">
+                    <span class="metric-label">Bundle Size</span>
+                    <span class="metric-value text-orange">~12 KB</span>
+                </div>
+            </div>
+            <!-- Card 4: Reliability (Wide) -->
+            <div class="card" style="grid-column: span 1.5;">
+                <div class="card-icon-wrapper accent-purple">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="card-title">Reliable Delivery <span class="tech-badge">TCP/IP</span></h3>
+                <p class="card-desc">
+                    Leverages TCP's built-in error checking, ordering, and retransmission mechanisms. Ensures files
+                    arrive bit-perfect without complex application-level checksums for every packet.
+                </p>
+                <div style="margin-top: auto; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <span
+                        style="font-size: 12px; color: #8b949e; background: rgba(163, 113, 247, 0.1); padding: 4px 8px; border-radius: 4px;">
+                        <i class="fa-solid fa-check" style="margin-right: 4px;"></i> Ordered Packets
+                    </span>
+                    <span
+                        style="font-size: 12px; color: #8b949e; background: rgba(163, 113, 247, 0.1); padding: 4px 8px; border-radius: 4px;">
+                        <i class="fa-solid fa-check" style="margin-right: 4px;"></i> Flow Control
+                    </span>
+                </div>
+            </div>
+            <!-- Card 5: Real-time Experience (Wide) -->
+            <div class="card" style="grid-column: span 1.5;">
+                <div class="card-icon-wrapper accent-red">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <h3 class="card-title">Real-time UX <span class="tech-badge">WebSockets</span></h3>
+                <p class="card-desc">
+                    Event-driven architecture pushes updates immediately. Discovery of new peers and transfer progress
+                    happens instantly without the user needing to refresh.
+                </p>
+                <div class="metric-box" style="margin-top: auto;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span class="metric-label">Latency</span>
+                        <span class="metric-value text-red">&lt; 10ms</span>
+                    </div>
+                    <div style="height: 4px; background: #30363d; width: 100px; border-radius: 2px;">
+                        <div style="height: 100%; background: #ff7b72; width: 15%; border-radius: 2px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Memory Usage Chart
+        const ctx = document.getElementById('memoryChart').getContext('2d');
+        const memoryChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['10MB', '100MB', '1GB', '5GB', '10GB'],
+                datasets: [
+                    {
+                        label: 'Our System (Constant)',
+                        data: [5, 5, 5, 5, 5], // Constant low usage
+                        borderColor: '#3fb950',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false,
+                        tension: 0
+                    },
+                    {
+                        label: 'Naive Load (Linear)',
+                        data: [1, 10, 30, 60, 90], // Increasing usage
+                        borderColor: '#8b949e',
+                        borderWidth: 1,
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                        fill: false,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                },
+                scales: {
+                    x: { display: false },
+                    y: { display: false, min: 0, max: 100 }
+                },
+                animation: false
+            }
+        });
+    </script>
+</body>
+
+</html>

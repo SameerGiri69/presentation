@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Demo &amp; Screenshots</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 30px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Background Pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 0L1 40' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3Cpath d='M0 1L40 1' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .section-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            color: #f0f6fc;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: inline-block;
+            background-color: rgba(240, 246, 252, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(240, 246, 252, 0.2);
+        }
+
+        .main-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 16px;
+            flex: 1;
+            min-height: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Mockup Container */
+        .mockup-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .mockup-card:hover {
+            border-color: #58a6ff;
+        }
+
+        .card-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: #8b949e;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .card-label i {
+            color: #58a6ff;
+        }
+
+        /* Mockup Window Internal */
+        .mock-window {
+            flex: 1;
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .mock-header {
+            background-color: #21262d;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .mock-dots {
+            display: flex;
+            gap: 4px;
+            margin-right: 12px;
+        }
+
+        .mock-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #30363d;
+        }
+
+        .mock-title {
+            font-size: 10px;
+            color: #8b949e;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .mock-body {
+            flex: 1;
+            padding: 16px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Specific Mocks Styles */
+
+        /* 1. Radar List */
+        .peer-list-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-bottom: 1px solid #21262d;
+            color: #c9d1d9;
+        }
+
+        .peer-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: #21262d;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #79c0ff;
+        }
+
+        .peer-info h4 {
+            margin: 0;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .peer-info p {
+            margin: 0;
+            font-size: 11px;
+            color: #8b949e;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #3fb950;
+            border-radius: 50%;
+            margin-left: auto;
+        }
+
+        /* 2. Toast Request */
+        .toast-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            margin: auto;
+            width: 80%;
+        }
+
+        .toast-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .toast-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #f0f6fc;
+        }
+
+        .file-icon-large {
+            font-size: 32px;
+            color: #a371f7;
+            margin-bottom: 8px;
+            text-align: center;
+            display: block;
+        }
+
+        .file-name {
+            text-align: center;
+            font-size: 12px;
+            color: #c9d1d9;
+            margin-bottom: 16px;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            cursor: default;
+        }
+
+        .btn-accept {
+            background-color: #238636;
+            color: white;
+        }
+
+        .btn-reject {
+            background-color: #21262d;
+            color: #ff7b72;
+            border: 1px solid #30363d;
+        }
+
+        /* 3. Transfer Progress */
+        .progress-container {
+            margin: auto;
+            width: 90%;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #c9d1d9;
+        }
+
+        .progress-bar-bg {
+            height: 8px;
+            background-color: #21262d;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-fill {
+            width: 65%;
+            height: 100%;
+            background-color: #3fb950;
+        }
+
+        .progress-stats {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            color: #8b949e;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* 4. Console */
+        .console-text {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .log-info {
+            color: #58a6ff;
+        }
+
+        .log-warn {
+            color: #d29922;
+        }
+
+        .log-success {
+            color: #3fb950;
+        }
+
+        .log-time {
+            color: #6e7681;
+            margin-right: 8px;
+        }
+
+        .placeholder-overlay {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            color: #8b949e;
+            border: 1px solid #30363d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <span class="section-tag">System in Action</span>
+                <h1 class="main-title">
+                    Demo &amp; Screenshots
+                </h1>
+            </div>
+        </div>
+        <!-- 2x2 Grid -->
+        <div class="gallery-grid">
+            <!-- 1. Discovery View -->
+            <div class="mockup-card">
+                <div class="card-label">
+                    <i class="fa-solid fa-radar"></i>
+                    <p>1. Nearby Devices (Discovery)</p>
+                </div>
+                <div class="mock-window">
+                    <div class="mock-header">
+                        <div class="mock-dots">
+                            <div class="mock-dot"></div>
+                            <div class="mock-dot"></div>
+                        </div>
+                        <span class="mock-title">localhost:8080/discover</span>
+                    </div>
+                    <div class="mock-body" style="padding: 0;">
+                        <div class="peer-list-item">
+                            <div class="peer-avatar"><i class="fa-solid fa-laptop"></i></div>
+                            <div class="peer-info">
+                                <h4>MacBook Pro (Sameer)</h4>
+                                <p>192.168.1.45 • 2s ago</p>
+                            </div>
+                            <div class="status-dot"></div>
+                        </div>
+                        <div class="peer-list-item">
+                            <div class="peer-avatar"><i class="fa-solid fa-desktop"></i></div>
+                            <div class="peer-info">
+                                <h4>Lab-PC-04</h4>
+                                <p>192.168.1.22 • &lt;1s ago</p>
+                            </div>
+                            <div class="status-dot"></div>
+                        </div>
+                        <div class="peer-list-item">
+                            <div class="peer-avatar" style="color: #8b949e;"><i class="fa-solid fa-mobile-screen"></i>
+                            </div>
+                            <div class="peer-info">
+                                <h4 style="color: #8b949e;">OnePlus 9R (Offline)</h4>
+                                <p>192.168.1.10 • 5m ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="placeholder-overlay">UI Mockup</div>
+            </div>
+            <!-- 2. Incoming Request -->
+            <div class="mockup-card">
+                <div class="card-label">
+                    <i class="fa-solid fa-bell"></i>
+                    <p>2. Incoming Request Toast</p>
+                </div>
+                <div class="mock-window">
+                    <div class="mock-header">
+                        <div class="mock-dots">
+                            <div class="mock-dot"></div>
+                            <div class="mock-dot"></div>
+                        </div>
+                        <span class="mock-title">Notification Layer</span>
+                    </div>
+                    <div class="mock-body"
+                        style="background-color: rgba(13, 17, 23, 0.8); display: flex; align-items: center;">
+                        <div class="toast-card">
+                            <div class="toast-header">
+                                <span class="toast-title">File Request</span>
+                                <span style="font-size: 10px; color: #8b949e;">Now</span>
+                            </div>
+                            <i class="fa-solid fa-file-video file-icon-large"></i>
+                            <p class="file-name">
+                                "Final_Project_Demo.mp4"<br />
+                                <span style="color: #8b949e;">2.4 GB • From: Sameer</span>
+                            </p>
+                            <div class="action-btns">
+                                <div class="btn btn-reject">Decline</div>
+                                <div class="btn btn-accept">Accept</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="placeholder-overlay">UI Mockup</div>
+            </div>
+            <!-- 3. Active Transfer -->
+            <div class="mockup-card">
+                <div class="card-label">
+                    <i class="fa-solid fa-spinner"></i>
+                    <p>3. Active Transfer</p>
+                </div>
+                <div class="mock-window">
+                    <div class="mock-header">
+                        <div class="mock-dots">
+                            <div class="mock-dot"></div>
+                            <div class="mock-dot"></div>
+                        </div>
+                        <span class="mock-title">Transfer Status</span>
+                    </div>
+                    <div class="mock-body" style="justify-content: center;">
+                        <div class="progress-container">
+                            <div style="display: flex; gap: 12px; margin-bottom: 12px; align-items: center;">
+                                <div
+                                    style="width: 40px; height: 40px; background: #21262d; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #a371f7;">
+                                    <i class="fa-solid fa-file-zipper"></i>
+                                </div>
+                                <div>
+                                    <h4 style="margin: 0; font-size: 13px; color: #f0f6fc;">Project_Backup.zip</h4>
+                                    <p style="margin: 0; font-size: 11px; color: #8b949e;">Receiving from Lab-PC-04</p>
+                                </div>
+                            </div>
+                            <div class="progress-header">
+                                <span>65%</span>
+                                <span>1.2 GB / 1.8 GB</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill"></div>
+                            </div>
+                            <div class="progress-stats">
+                                <span><i class="fa-solid fa-bolt"></i> 45 MB/s</span>
+                                <span>ETA: 14s</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="placeholder-overlay">UI Mockup</div>
+            </div>
+            <!-- 4. Server Console -->
+            <div class="mockup-card">
+                <div class="card-label">
+                    <i class="fa-solid fa-terminal"></i>
+                    <p>4. Backend Logs</p>
+                </div>
+                <div class="mock-window">
+                    <div class="mock-header">
+                        <div class="mock-dots">
+                            <div class="mock-dot"></div>
+                            <div class="mock-dot"></div>
+                        </div>
+                        <span class="mock-title">zsh - server</span>
+                    </div>
+                    <div class="mock-body" style="background-color: #000; padding: 12px; overflow: hidden;">
+                        <div class="console-text">
+                            <p style="margin: 0;"><span class="log-time">14:02:10</span> <span
+                                    class="log-info">[INFO]</span> Server started on :8080</p>
+                            <p style="margin: 0;"><span class="log-time">14:02:12</span> <span
+                                    class="log-success">[UDP]</span> Broadcasting presence...</p>
+                            <p style="margin: 0;"><span class="log-time">14:02:45</span> <span
+                                    class="log-info">[WS]</span> Client connected: 192.168.1.45</p>
+                            <p style="margin: 0;"><span class="log-time">14:03:01</span> <span
+                                    class="log-info">[TCP]</span> Incoming connection accepted</p>
+                            <p style="margin: 0;"><span class="log-time">14:03:02</span> <span
+                                    class="log-success">[TX]</span> Transfer started: ID 550e84...</p>
+                            <p style="margin: 0;"><span class="log-time">14:03:05</span> <span
+                                    class="log-warn">[DB]</span> Updated progress: 15%</p>
+                            <p style="margin: 0; animation: blink 1s infinite;">_</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="placeholder-overlay">Log Output</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

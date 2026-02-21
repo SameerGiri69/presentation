@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Stage 4: Streaming</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0d1117;
+            padding: 50px 70px;
+            box-sizing: border-box;
+        }
+
+        /* Background Pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            background-image:
+                linear-gradient(rgba(48, 54, 61, 0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(48, 54, 61, 0.5) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        /* Accent Gradient for this stage (Green for Streaming/Success) */
+        .stage-accent-bg {
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            /* Using solid color with opacity instead of gradient to avoid export issues */
+            background-color: rgba(63, 185, 80, 0.08);
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .section-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            color: #3fb950;
+            /* Stage 4 Color */
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: inline-block;
+            background-color: rgba(63, 185, 80, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(63, 185, 80, 0.2);
+        }
+
+        .main-title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stage-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 40px;
+            color: rgba(255, 255, 255, 0.1);
+            font-weight: 700;
+        }
+
+        /* Main Content Layout */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            gap: 40px;
+            flex: 1;
+            height: 100%;
+        }
+
+        /* Left Column: Explanation */
+        .col-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-right: 20px;
+        }
+
+        .concept-block {
+            margin-bottom: 30px;
+        }
+
+        .concept-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #f0f6fc;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .concept-icon {
+            color: #3fb950;
+            font-size: 24px;
+        }
+
+        .concept-desc {
+            font-size: 16px;
+            color: #8b949e;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            padding: 16px;
+            border-radius: 8px;
+            transition: border-color 0.2s;
+        }
+
+        .feature-item:hover {
+            border-color: #3fb950;
+        }
+
+        .item-icon {
+            color: #3fb950;
+            margin-top: 2px;
+            font-size: 16px;
+        }
+
+        .item-content h4 {
+            color: #e6edf3;
+            font-size: 16px;
+            margin: 0 0 4px 0;
+            font-weight: 600;
+        }
+
+        .item-content p {
+            color: #8b949e;
+            font-size: 13px;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Right Column: Code & Specs */
+        .col-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        /* Code Window */
+        .code-window {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .window-header {
+            background-color: #161b22;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .window-dots {
+            display: flex;
+            gap: 6px;
+            margin-right: 16px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot-red {
+            background-color: #ff7b72;
+        }
+
+        .dot-yellow {
+            background-color: #d29922;
+        }
+
+        .dot-green {
+            background-color: #3fb950;
+        }
+
+        .window-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: #8b949e;
+        }
+
+        .code-content {
+            padding: 20px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #c9d1d9;
+            background-color: #0d1117;
+        }
+
+        /* Syntax Highlighting */
+        .token-key {
+            color: #79c0ff;
+        }
+
+        /* Blue */
+        .token-string {
+            color: #a5d6ff;
+        }
+
+        /* Light Blue */
+        .token-number {
+            color: #d2a8ff;
+        }
+
+        /* Purple */
+        .token-bool {
+            color: #ff7b72;
+        }
+
+        /* Red */
+        .token-comment {
+            color: #8b949e;
+            font-style: italic;
+        }
+
+        .token-func {
+            color: #d2a8ff;
+        }
+
+        /* Purple for functions */
+
+        /* Network Specs Grid */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .spec-card {
+            background-color: rgba(22, 27, 34, 0.8);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+
+        .spec-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: #8b949e;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .spec-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 15px;
+            color: #f0f6fc;
+            font-weight: 600;
+        }
+
+        .highlight-value {
+            color: #3fb950;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <div class="stage-accent-bg"></div>
+        <div class="header">
+            <div class="header-content">
+                <span class="section-tag">The "Highway"</span>
+                <h1 class="main-title">
+                    Stage 4: Streaming
+                </h1>
+            </div>
+            <div class="stage-number">04</div>
+        </div>
+        <div class="content-wrapper">
+            <!-- Left Panel: Explanation -->
+            <div class="col-left">
+                <div class="concept-block">
+                    <h2 class="concept-title">
+                        <i class="fa-solid fa-bars-staggered concept-icon"></i>
+                        Chunked Streaming
+                    </h2>
+                    <p class="concept-desc">
+                        Once accepted, the file is not loaded entirely into RAM. Instead, it flows in small, manageable
+                        64KB chunks through the TCP connection, ensuring memory stability even for large files.
+                    </p>
+                </div>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <i class="fa-solid fa-microchip item-icon"></i>
+                        <div class="item-content">
+                            <h4>Stable Memory Usage</h4>
+                            <p>By using a fixed 64KB buffer, the app uses constant memory regardless of whether the file
+                                is 1MB or 10GB.</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <i class="fa-solid fa-shield-halved item-icon"></i>
+                        <div class="item-content">
+                            <h4>TCP Reliability</h4>
+                            <p>The TCP protocol automatically handles packet ordering and retransmission, ensuring the
+                                file arrives uncorrupted.</p>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <i class="fa-solid fa-download item-icon"></i>
+                        <div class="item-content">
+                            <h4>Direct-to-Disk</h4>
+                            <p>The receiver writes incoming chunks immediately to the Downloads folder, minimizing
+                                system overhead.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- Right Panel: Technical Details -->
+            <div class="col-right">
+                <!-- Code Window -->
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-dots">
+                            <div class="dot dot-red"></div>
+                            <div class="dot dot-yellow"></div>
+                            <div class="dot dot-green"></div>
+                        </div>
+                        <span class="window-title">transfer_service.go</span>
+                    </div>
+                    <div class="code-content">
+                        <span class="token-comment">// 64KB buffer for reading</span>
+                        <span class="token-key">const</span> BufferSize = <span class="token-number">64</span> * <span
+                            class="token-number">1024</span>
+                        buf := <span class="token-func">make</span>([]<span class="token-key">byte</span>, BufferSize)
+
+                        <span class="token-key">for</span> {
+                        n, err := file.<span class="token-func">Read</span>(buf)
+                        <span class="token-key">if</span> err != <span class="token-key">nil</span> { <span
+                            class="token-key">break</span> }
+
+                        <span class="token-comment">// Write chunk to TCP socket</span>
+                        conn.<span class="token-func">Write</span>(buf[:n])
+
+                        <span class="token-comment">// Update DB &amp; Notify UI</span>
+                        <span class="token-func">UpdateProgress</span>(transferID, n)
+                        }
+                    </div>
+                </div>
+                <!-- Specs Grid -->
+                <div class="specs-grid">
+                    <div class="spec-card">
+                        <div class="spec-label">Chunk Size</div>
+                        <div class="spec-value highlight-value">64 KB</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-label">Protocol</div>
+                        <div class="spec-value">TCP / IP</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-label">Method</div>
+                        <div class="spec-value">io.CopyBuffer</div>
+                    </div>
+                    <div class="spec-card">
+                        <div class="spec-label">Destination</div>
+                        <div class="spec-value">~/Downloads</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

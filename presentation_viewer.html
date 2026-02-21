@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2P File Transfer System - Presentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --sidebar-bg: #161b22;
+            --border-color: #30363d;
+            --text-color: #c9d1d9;
+            --accent-color: #58a6ff;
+            --slide-width: 1280px;
+            --slide-height: 720px;
+            --controls-height: 64px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Presentation Shell */
+        .presentation-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background-color: #010409;
+            padding: 20px;
+            overflow: hidden;
+            transition: padding 0.3s ease;
+        }
+
+        /* Fullscreen modifications */
+        body.is-fullscreen .presentation-container {
+            padding: 0;
+        }
+
+        body.is-fullscreen .controls {
+            display: none;
+        }
+
+        body.is-fullscreen .progress-container {
+            bottom: 0px;
+            opacity: 0.3;
+        }
+
+        /* Scaling Wrapper */
+        .slide-scaler {
+            width: var(--slide-width);
+            height: var(--slide-height);
+            transform-origin: center center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            position: relative;
+        }
+
+        body.is-fullscreen .slide-scaler {
+            border: none;
+            box-shadow: none;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+        }
+
+        /* Navigation Controls */
+        .controls {
+            background-color: var(--sidebar-bg);
+            border-top: 1px solid var(--border-color);
+            height: var(--controls-height);
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        /* Rest of styles remain similar but I'll ensure they are clean */
+
+        .nav-buttons {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+        }
+
+        .btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent-color);
+            color: #fff;
+        }
+
+        .btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .slide-info {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 14px;
+            color: #8b949e;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .kb-hint {
+            font-size: 12px;
+            color: #484f58;
+            margin-left: 20px;
+        }
+
+        kbd {
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 3px;
+            padding: 1px 4px;
+            font-size: 11px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: absolute;
+            bottom: var(--controls-height);
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.05);
+            z-index: 110;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--accent-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Floating Nav for quick access */
+        .overlay-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            justify-content: space-between;
+            z-index: 50;
+        }
+
+        .nav-zone {
+            width: 10%;
+            height: 100%;
+            pointer-events: auto;
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .nav-zone:hover {
+            opacity: 1;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.3), transparent);
+        }
+
+        .nav-zone.next:hover {
+            background: linear-gradient(to left, rgba(0, 0, 0, 0.3), transparent);
+        }
+
+        .nav-zone i {
+            font-size: 48px;
+            color: rgba(255, 255, 255, 0.4);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="presentation-container" id="container">
+        <div class="overlay-nav">
+            <div class="nav-zone prev" onclick="prevSlide()" title="Previous Slide (Left Arrow)">
+                <i class="fa-solid fa-chevron-left"></i>
+            </div>
+            <div class="nav-zone next" onclick="nextSlide()" title="Next Slide (Right Arrow / Space)">
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </div>
+
+        <div class="slide-scaler" id="scaler">
+            <iframe id="slide-frame" src="1.html"></iframe>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="nav-buttons">
+            <button class="btn" id="prev-btn" onclick="prevSlide()">
+                <i class="fa-solid fa-arrow-left"></i> Previous
+            </button>
+            <div class="slide-info">
+                Slide <span id="current-page">1</span> of <span id="total-pages">17</span>
+            </div>
+            <button class="btn" id="next-btn" onclick="nextSlide()">
+                Next <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <div class="kb-hint">
+                Use <kbd>←</kbd> <kbd>→</kbd> <kbd>Space</kbd> or <kbd>Home</kbd> <kbd>End</kbd> to navigate
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn" onclick="toggleFullscreen()">
+                <i class="fa-solid fa-expand"></i> Fullscreen
+            </button>
+        </div>
+    </div>
+
+    <div class="progress-container" id="progress-shell">
+        <div class="progress-bar" id="progress"></div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 17;
+        const frame = document.getElementById('slide-frame');
+        const scaler = document.getElementById('scaler');
+        const container = document.getElementById('container');
+        const currentPageEl = document.getElementById('current-page');
+        const progressEl = document.getElementById('progress');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        function updateSlide() {
+            // Update iframe source
+            frame.src = `${currentSlide}.html`;
+
+            // Update UI
+            currentPageEl.textContent = currentSlide;
+            const progress = (currentSlide / totalSlides) * 100;
+            progressEl.style.width = `${progress}%`;
+
+            // Update buttons
+            prevBtn.disabled = (currentSlide === 1);
+            nextBtn.disabled = (currentSlide === totalSlides);
+
+            // Store in URL hash for deep linking
+            window.location.hash = `slide=${currentSlide}`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function jumpToSlide(num) {
+            if (num >= 1 && num <= totalSlides) {
+                currentSlide = num;
+                updateSlide();
+            }
+        }
+
+        // Responsive Scaling
+        function handleResize() {
+            const isFullscreen = !!document.fullscreenElement;
+            const containerWidth = container.clientWidth;
+            const containerHeight = container.clientHeight;
+
+            const scaleX = containerWidth / 1280;
+            const scaleY = containerHeight / 720;
+
+            // In fullscreen, we want it to fit perfectly (border to border)
+            // If the aspect ratio of the monitor doesn't match 16:9, there will be black bars 
+            // on sides or top/bottom, but the SLIDE itself will touch the respective borders.
+            const scale = Math.min(scaleX, scaleY);
+
+            scaler.style.transform = `scale(${scale})`;
+
+            if (isFullscreen) {
+                document.body.classList.add('is-fullscreen');
+            } else {
+                document.body.classList.remove('is-fullscreen');
+            }
+        }
+
+        // Keyboard support
+        window.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case 'ArrowRight':
+                case 'ArrowDown':
+                case ' ':
+                case 'PageDown':
+                    nextSlide();
+                    break;
+                case 'ArrowLeft':
+                case 'ArrowUp':
+                case 'PageUp':
+                    prevSlide();
+                    break;
+                case 'Home':
+                    jumpToSlide(1);
+                    break;
+                case 'End':
+                    jumpToSlide(totalSlides);
+                    break;
+                case 'f':
+                case 'F':
+                    toggleFullscreen();
+                    break;
+            }
+        });
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        document.addEventListener('fullscreenchange', handleResize);
+
+        // Handle deep links
+        function handleHash() {
+            const hash = window.location.hash;
+            const match = hash.match(/slide=(\d+)/);
+            if (match) {
+                const slideNum = parseInt(match[1]);
+                if (slideNum >= 1 && slideNum <= totalSlides) {
+                    currentSlide = slideNum;
+                    updateSlide();
+                }
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('load', () => {
+            handleHash();
+            handleResize();
+            updateSlide();
+        });
+        window.addEventListener('hashchange', handleHash);
+
+    </script>
+</body>
+
+</html>

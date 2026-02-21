@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Libraries Used</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0d1117;
+            padding: 60px 80px;
+            box-sizing: border-box;
+        }
+
+        /* Subtle Background Pattern */
+        .bg-dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(#30363d 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.2;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 20px;
+        }
+
+        .section-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            color: #58a6ff;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .main-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #8b949e;
+            margin-top: 8px;
+            font-weight: 300;
+        }
+
+        /* Grid Layout */
+        .grid-container {
+            position: relative;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            flex: 1;
+            align-content: start;
+        }
+
+        /* Library Card */
+        .lib-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .lib-card:hover {
+            border-color: #58a6ff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .content-box {
+            flex: 1;
+            min-width: 0;
+            /* Prevents text overflow issues */
+        }
+
+        .pkg-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 15px;
+            font-weight: 600;
+            color: #f0f6fc;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pkg-desc {
+            font-size: 14px;
+            color: #8b949e;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Color Variations */
+        .color-blue {
+            color: #58a6ff;
+            background-color: rgba(88, 166, 255, 0.15);
+        }
+
+        .color-green {
+            color: #3fb950;
+            background-color: rgba(63, 185, 80, 0.15);
+        }
+
+        .color-purple {
+            color: #d2a8ff;
+            background-color: rgba(210, 168, 255, 0.15);
+        }
+
+        .color-orange {
+            color: #d29922;
+            background-color: rgba(210, 153, 34, 0.15);
+        }
+
+        .color-red {
+            color: #ff7b72;
+            background-color: rgba(255, 123, 114, 0.15);
+        }
+
+        /* Summary Box (Bottom Right filler) */
+        .summary-box {
+            grid-column: 2;
+            background-color: transparent;
+            border: 1px dashed #30363d;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .summary-text {
+            color: #8b949e;
+            font-size: 14px;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .summary-icon {
+            text-align: center;
+            font-size: 24px;
+            color: #30363d;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-dots"></div>
+        <div class="header">
+            <p class="section-tag">Dependencies</p>
+            <h1 class="main-title">Libraries Used</h1>
+            <p class="subtitle">Selected for stability, security, and performance.</p>
+        </div>
+        <div class="grid-container">
+            <!-- Item 1: UUID -->
+            <div class="lib-card">
+                <div class="icon-box color-blue">
+                    <i class="fa-solid fa-fingerprint"></i>
+                </div>
+                <div class="content-box">
+                    <p class="pkg-name">github.com/google/uuid</p>
+                    <p class="pkg-desc">Generates collision-free unique IDs for every file transfer session, ensuring
+                        reliable tracking.</p>
+                </div>
+            </div>
+            <!-- Item 2: WebSocket -->
+            <div class="lib-card">
+                <div class="icon-box color-purple">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <div class="content-box">
+                    <p class="pkg-name">github.com/gorilla/websocket</p>
+                    <p class="pkg-desc">Enables real-time, full-duplex communication between the Go server and Web UI
+                        for progress updates.</p>
+                </div>
+            </div>
+            <!-- Item 3: Postgres -->
+            <div class="lib-card">
+                <div class="icon-box color-green">
+                    <i class="fa-solid fa-database"></i>
+                </div>
+                <div class="content-box">
+                    <p class="pkg-name">github.com/lib/pq</p>
+                    <p class="pkg-desc">Pure Go driver for PostgreSQL. Handles metadata storage, user records, and
+                        transfer logs.</p>
+                </div>
+            </div>
+            <!-- Item 4: Bcrypt -->
+            <div class="lib-card">
+                <div class="icon-box color-red">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div class="content-box">
+                    <p class="pkg-name">golang.org/x/crypto/bcrypt</p>
+                    <p class="pkg-desc">Securely hashes user passwords using salt and adaptive cost factors before
+                        database storage.</p>
+                </div>
+            </div>
+            <!-- Item 5: Gomail -->
+            <div class="lib-card">
+                <div class="icon-box color-orange">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
+                <div class="content-box">
+                    <p class="pkg-name">gopkg.in/gomail.v2</p>
+                    <p class="pkg-desc">Simple, efficient SMTP client for sending email notifications upon transfer
+                        completion.</p>
+                </div>
+            </div>
+            <!-- Philosophy Filler -->
+            <div class="summary-box">
+                <div class="summary-icon">
+                    <i class="fa-solid fa-cube"></i>
+                </div>
+                <p class="summary-text">
+                    "We use standard library packages (net, io, context) for 90% of the functionality to keep the binary
+                    small and secure."
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

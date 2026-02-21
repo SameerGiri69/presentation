@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>P2P File Transfer System - Title Slide</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            /* GitHub Dark Background */
+            color: #c9d1d9;
+            /* GitHub Dark Text */
+            overflow: hidden;
+            width: 1280px;
+            height: 720px;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0d1117;
+            overflow: hidden;
+        }
+
+        /* Background Network Effect */
+        #network-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.4;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .badge {
+            background-color: rgba(56, 139, 253, 0.15);
+            color: #58a6ff;
+            border: 1px solid rgba(56, 139, 253, 0.4);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .title {
+            font-size: 72px;
+            font-weight: 800;
+            line-height: 1.1;
+            color: #f0f6fc;
+            margin-bottom: 16px;
+            letter-spacing: -1.5px;
+            text-shadow: 0 0 40px rgba(88, 166, 255, 0.2);
+        }
+
+        .subtitle {
+            font-size: 28px;
+            color: #8b949e;
+            font-weight: 300;
+            margin-bottom: 48px;
+            max-width: 800px;
+            line-height: 1.5;
+        }
+
+        .tech-pill-container {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 64px;
+        }
+
+        .tech-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 16px;
+            color: #c9d1d9;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tech-pill i {
+            font-size: 18px;
+        }
+
+        .tech-pill.go {
+            border-color: rgba(0, 173, 216, 0.3);
+        }
+
+        .tech-pill.go i {
+            color: #00ADD8;
+        }
+
+        /* Go Blue */
+
+        .tech-pill.js {
+            border-color: rgba(247, 223, 30, 0.3);
+        }
+
+        .tech-pill.js i {
+            color: #F7DF1E;
+        }
+
+        /* JS Yellow */
+
+        .tech-pill.html {
+            border-color: rgba(227, 79, 38, 0.3);
+        }
+
+        .tech-pill.html i {
+            color: #E34F26;
+        }
+
+        /* HTML Orange */
+
+        .presenter-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-top: 1px solid #30363d;
+            padding-top: 32px;
+            width: 60%;
+        }
+
+        .presenter-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f0f6fc;
+            margin-bottom: 8px;
+        }
+
+        .presenter-details {
+            font-size: 16px;
+            color: #8b949e;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        /* Decorative glowing orbs (simulated with box-shadow since gradients are restricted) */
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 2;
+            opacity: 0.15;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background-color: #58a6ff;
+            top: -50px;
+            right: -50px;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background-color: #3fb950;
+            bottom: -100px;
+            left: -100px;
+        }
+
+        /* Scanline effect */
+        .scanlines {
+            background: repeating-linear-gradient(to bottom,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.02) .5%,
+                    transparent 1%);
+            /* Wait, no gradients allowed. I will use a simple image pattern or SVG if needed, but per constraint I should avoid CSS gradients. Let's remove this overlay to be safe and stick to solid colors/canvas. */
+            /* Using a solid border pattern instead */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+            background-size: 100% 4px;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAECAYAAABP2FU6AAAAEklEQVR42mNkYGBg+P///38AAEAOYQXYGxycAAAAAElFTkSuQmCC');
+            /* 1x4 pixel pattern */
+            opacity: 0.1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <!-- Background Elements -->
+        <canvas id="network-canvas"></canvas>
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="scanlines"></div>
+        <div class="content-wrapper">
+            <div class="badge">
+                <p>Final Year Project</p>
+            </div>
+            <h1 class="title">
+                <p>P2P File Transfer System</p>
+            </h1>
+            <div class="subtitle">
+                <p>Fast, reliable, minimal-dependency file sharing with real-time progress monitoring.</p>
+            </div>
+            <div class="tech-pill-container">
+                <div class="tech-pill go">
+                    <i class="fa-brands fa-golang"></i>
+                    <p>Go Backend</p>
+                </div>
+                <div class="tech-pill js">
+                    <i class="fa-brands fa-js"></i>
+                    <p>Vanilla JS</p>
+                </div>
+                <div class="tech-pill html">
+                    <i class="fa-solid fa-bolt"></i>
+                    <p>WebSockets</p>
+                </div>
+                <div class="tech-pill">
+                    <i class="fa-solid fa-database"></i>
+                    <p>PostgreSQL</p>
+                </div>
+            </div>
+            <div class="presenter-info">
+                <p class="presenter-name">[Your Name Here]</p>
+                <p class="presenter-details">Computer Science Dept • Class of 2026</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Simple Canvas Script to draw a connected network background
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        canvas.width = 1280;
+        canvas.height = 720;
+
+        const nodes = [];
+        const numNodes = 40;
+        const connectionDistance = 200;
+
+        // Initialize Nodes
+        for (let i = 0; i < numNodes; i++) {
+            nodes.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2 + 1,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Connections first
+            ctx.lineWidth = 1;
+
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < connectionDistance) {
+                        const opacity = 1 - (dist / connectionDistance);
+                        ctx.strokeStyle = `rgba(88, 166, 255, ${opacity * 0.15})`; // GitHub Blue with low opacity
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Draw Nodes
+            for (let i = 0; i < nodes.length; i++) {
+                const node = nodes[i];
+                ctx.fillStyle = '#58a6ff';
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Move nodes slightly (optional, but keeps it "alive" even if static snapshot)
+                // For a static export, this creates one frame. 
+            }
+        }
+
+        draw();
+    </script>
+</body>
+
+</html>

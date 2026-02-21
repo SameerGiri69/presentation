@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>System Architecture</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0d1117;
+            padding: 40px 60px;
+            box-sizing: border-box;
+        }
+
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 0L1 40' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3Cpath d='M0 1L40 1' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+        }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 15px;
+        }
+
+        .section-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            color: #58a6ff;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .main-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin: 0;
+        }
+
+        /* Architecture Diagram Container */
+        .diagram-container {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Component Boxes */
+        .arch-box {
+            position: absolute;
+            background-color: #161b22;
+            border: 2px solid #30363d;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .arch-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border-color: #58a6ff;
+        }
+
+        .box-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin-bottom: 6px;
+        }
+
+        .box-desc {
+            font-size: 12px;
+            color: #8b949e;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .box-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        /* Specific Box Styles & Positions */
+        /* Frontend */
+        .box-frontend {
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 100px;
+            border-color: #d2a8ff;
+            /* Purple */
+        }
+
+        .box-frontend .box-icon {
+            color: #d2a8ff;
+        }
+
+        /* Gateway */
+        .box-gateway {
+            top: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 260px;
+            height: 110px;
+            border-color: #58a6ff;
+            /* Blue */
+            background-color: #0d1117;
+            z-index: 5;
+        }
+
+        .box-gateway .box-icon {
+            color: #58a6ff;
+        }
+
+        /* Backend Services Row */
+        .service-row-y {
+            top: 380px;
+        }
+
+        .box-discovery {
+            top: 380px;
+            left: 200px;
+            width: 200px;
+            height: 100px;
+            border-color: #e3b341;
+            /* Yellow */
+        }
+
+        .box-discovery .box-icon {
+            color: #e3b341;
+        }
+
+        .box-transfer {
+            top: 380px;
+            right: 200px;
+            width: 200px;
+            height: 100px;
+            border-color: #3fb950;
+            /* Green */
+        }
+
+        .box-transfer .box-icon {
+            color: #3fb950;
+        }
+
+        /* Database & Mailer Row */
+        .box-db {
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 90px;
+            border-color: #ff7b72;
+            /* Red */
+        }
+
+        .box-db .box-icon {
+            color: #ff7b72;
+        }
+
+        .box-mailer {
+            top: 280px;
+            right: 80px;
+            width: 140px;
+            height: 80px;
+            border-color: #8b949e;
+            /* Grey */
+        }
+
+        .box-mailer .box-icon {
+            color: #8b949e;
+        }
+
+        /* Connecting Lines (SVG) */
+        .connections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Flow Labels */
+        .flow-label {
+            position: absolute;
+            background-color: #0d1117;
+            color: #8b949e;
+            font-size: 11px;
+            font-family: 'IBM Plex Mono', monospace;
+            padding: 2px 6px;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            z-index: 4;
+        }
+
+        /* Legend */
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 20px;
+            background-color: rgba(22, 27, 34, 0.9);
+            padding: 10px 16px;
+            border-radius: 6px;
+            border: 1px solid #30363d;
+            z-index: 10;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #8b949e;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <div class="header">
+            <p class="section-tag">High-Level Design</p>
+            <h1 class="main-title">System Architecture</h1>
+        </div>
+        <div class="diagram-container">
+            <!-- SVG Connections -->
+            <svg class="connections" height="100%" width="100%">
+                <defs>
+                    <marker id="arrowhead" markerheight="7" markerwidth="10" orient="auto" refx="9" refy="3.5">
+                        <polygon fill="#30363d" points="0 0, 10 3.5, 0 7"></polygon>
+                    </marker>
+                    <marker id="arrowhead-blue" markerheight="7" markerwidth="10" orient="auto" refx="9" refy="3.5">
+                        <polygon fill="#58a6ff" points="0 0, 10 3.5, 0 7"></polygon>
+                    </marker>
+                </defs>
+                <!-- Frontend to Gateway -->
+                <path d="M 640 142 L 640 198" fill="none" marker-end="url(#arrowhead-blue)" stroke="#58a6ff"
+                    stroke-width="2"></path>
+                <!-- Gateway to Discovery -->
+                <path d="M 590 312 L 400 378" fill="none" marker-end="url(#arrowhead)" stroke="#30363d"
+                    stroke-dasharray="5,5" stroke-width="2"></path>
+                <!-- Gateway to Transfer -->
+                <path d="M 690 312 L 880 378" fill="none" marker-end="url(#arrowhead)" stroke="#30363d"
+                    stroke-width="2"></path>
+                <!-- Gateway to Mailer -->
+                <path d="M 770 255 L 940 255 L 940 278" fill="none" marker-end="url(#arrowhead)" stroke="#30363d"
+                    stroke-dasharray="2,2" stroke-width="1"></path>
+                <!-- Gateway to DB -->
+                <path d="M 640 312 L 640 460" fill="none" marker-end="url(#arrowhead)" stroke="#30363d"
+                    stroke-width="2"></path>
+                <!-- Transfer to DB -->
+                <path d="M 880 430 L 740 480" fill="none" marker-end="url(#arrowhead)" stroke="#30363d"
+                    stroke-dasharray="4,4" stroke-width="1"></path>
+            </svg>
+            <!-- Labels -->
+            <div class="flow-label" style="top: 160px; left: 51%;">WebSocket / HTTP</div>
+            <div class="flow-label" style="top: 335px; left: 450px;">UDP Multicast</div>
+            <div class="flow-label" style="top: 335px; right: 450px;">TCP Stream</div>
+            <!-- Boxes -->
+            <!-- Frontend -->
+            <div class="arch-box box-frontend">
+                <i class="fa-solid fa-laptop-code box-icon"></i>
+                <div class="box-title">Web UI</div>
+                <div class="box-desc">Vanilla JS / HTML / CSS</div>
+            </div>
+            <!-- Gateway -->
+            <div class="arch-box box-gateway">
+                <i class="fa-brands fa-golang box-icon"></i>
+                <div class="box-title">API &amp; Gateway</div>
+                <div class="box-desc">Request Routing &amp; WS Manager</div>
+            </div>
+            <!-- Discovery -->
+            <div class="arch-box box-discovery">
+                <i class="fa-solid fa-satellite-dish box-icon"></i>
+                <div class="box-title">Discovery Service</div>
+                <div class="box-desc">UDP Multicast (239.0.0.1)</div>
+            </div>
+            <!-- Transfer -->
+            <div class="arch-box box-transfer">
+                <i class="fa-solid fa-file-export box-icon"></i>
+                <div class="box-title">Transfer Service</div>
+                <div class="box-desc">Chunked TCP Stream (64KB)</div>
+            </div>
+            <!-- Mailer -->
+            <div class="arch-box box-mailer">
+                <i class="fa-solid fa-envelope box-icon"></i>
+                <div class="box-title">Mailer</div>
+                <div class="box-desc">SMTP / Gomail</div>
+            </div>
+            <!-- Database -->
+            <div class="arch-box box-db">
+                <i class="fa-solid fa-database box-icon"></i>
+                <div class="box-title">PostgreSQL</div>
+                <div class="box-desc">Users, Transfers, Logs</div>
+            </div>
+        </div>
+        <!-- Legend -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background-color: #58a6ff;"></div>
+                <p>Primary Flow</p>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background-color: #30363d; border: 1px solid #8b949e;"></div>
+                <p>Internal Logic</p>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background-color: #e3b341;"></div>
+                <p>UDP Broadcast</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

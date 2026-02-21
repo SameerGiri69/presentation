@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Challenges &amp; Learnings</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 30px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Background Pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 0L1 40' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3Cpath d='M0 1L40 1' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .section-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            color: #d29922;
+            /* Orange for challenges/learning */
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: inline-block;
+            background-color: rgba(210, 153, 34, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(210, 153, 34, 0.2);
+        }
+
+        .main-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Grid Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto 1fr;
+            gap: 16px;
+            flex: 1;
+            min-height: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Row Configuration */
+        .row-top {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .row-bottom {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        /* Card Styles */
+        .challenge-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, border-color 0.2s;
+            position: relative;
+            height: 100%;
+        }
+
+        .challenge-card:hover {
+            border-color: #d29922;
+            /* Hover orange */
+            transform: translateY(-2px);
+            background-color: #1c2128;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #21262d;
+        }
+
+        .icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .title-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #f0f6fc;
+            margin: 0;
+        }
+
+        /* Section within card */
+        .section-block {
+            margin-bottom: 12px;
+            flex-grow: 1;
+        }
+
+        .section-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .label-problem {
+            color: #ff7b72;
+        }
+
+        .label-solution {
+            color: #3fb950;
+            margin-top: 12px;
+        }
+
+        .section-desc {
+            font-size: 13px;
+            color: #8b949e;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Specific Accents */
+        .accent-udp {
+            background-color: rgba(56, 139, 253, 0.1);
+            color: #58a6ff;
+        }
+
+        .accent-io {
+            background-color: rgba(163, 113, 247, 0.1);
+            color: #a371f7;
+        }
+
+        .accent-ui {
+            background-color: rgba(210, 153, 34, 0.1);
+            color: #d29922;
+        }
+
+        .accent-db {
+            background-color: rgba(235, 151, 78, 0.1);
+            color: #fb8f44;
+        }
+
+        .accent-file {
+            background-color: rgba(255, 123, 114, 0.1);
+            color: #ff7b72;
+        }
+
+        /* Code Pill */
+        .code-pill {
+            display: inline-block;
+            background-color: rgba(110, 118, 129, 0.4);
+            color: #f0f6fc;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+        }
+
+        .arrow-divider {
+            color: #30363d;
+            font-size: 12px;
+            margin: 4px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <span class="section-tag">Obstacles &amp; Solutions</span>
+                <h1 class="main-title">
+                    Challenges &amp; Learnings
+                </h1>
+            </div>
+        </div>
+        <!-- Content Grid -->
+        <div class="grid-container">
+            <!-- Top Row: 3 Items -->
+            <div class="row-top">
+                <!-- 1. UDP Multicast -->
+                <div class="challenge-card">
+                    <div class="card-header">
+                        <div class="icon-box accent-udp">
+                            <i class="fa-solid fa-satellite-dish"></i>
+                        </div>
+                        <h3 class="title-text">Discovery Reliability</h3>
+                    </div>
+                    <div class="section-block">
+                        <div class="section-label label-problem">
+                            <i class="fa-solid fa-circle-exclamation"></i> The Challenge
+                        </div>
+                        <p class="section-desc">
+                            UDP Multicast often fails on multi-interface systems (e.g., VirtualBox, VPNs) because the OS
+                            routes packets to the wrong NIC.
+                        </p>
+                        <div class="section-label label-solution">
+                            <i class="fa-solid fa-check"></i> The Fix
+                        </div>
+                        <p class="section-desc">
+                            Implemented explicit interface binding. The app iterates through available interfaces to
+                            find the active LAN IP (e.g., <span class="code-pill">192.168.x.x</span>) and binds the
+                            listener specifically to it.
+                        </p>
+                    </div>
+                </div>
+                <!-- 2. Socket I/O -->
+                <div class="challenge-card">
+                    <div class="card-header">
+                        <div class="icon-box accent-io">
+                            <i class="fa-solid fa-plug"></i>
+                        </div>
+                        <h3 class="title-text">Robust Socket I/O</h3>
+                    </div>
+                    <div class="section-block">
+                        <div class="section-label label-problem">
+                            <i class="fa-solid fa-circle-exclamation"></i> The Challenge
+                        </div>
+                        <p class="section-desc">
+                            TCP is a stream, not a message queue. <span class="code-pill">conn.Read()</span> might
+                            return partial chunks (e.g., 20KB instead of 64KB), corrupting file assembly.
+                        </p>
+                        <div class="section-label label-solution">
+                            <i class="fa-solid fa-check"></i> The Fix
+                        </div>
+                        <p class="section-desc">
+                            Switched to <span class="code-pill">io.ReadFull()</span> and a loop-based reader to
+                            guarantee the buffer is completely filled before writing to disk.
+                        </p>
+                    </div>
+                </div>
+                <!-- 3. UI Jitter -->
+                <div class="challenge-card">
+                    <div class="card-header">
+                        <div class="icon-box accent-ui">
+                            <i class="fa-solid fa-gauge-high"></i>
+                        </div>
+                        <h3 class="title-text">UI Performance</h3>
+                    </div>
+                    <div class="section-block">
+                        <div class="section-label label-problem">
+                            <i class="fa-solid fa-circle-exclamation"></i> The Challenge
+                        </div>
+                        <p class="section-desc">
+                            Sending a WebSocket event for every 64KB chunk (approx. 16,000 times/GB) flooded the browser
+                            event loop, causing the UI to freeze.
+                        </p>
+                        <div class="section-label label-solution">
+                            <i class="fa-solid fa-check"></i> The Fix
+                        </div>
+                        <p class="section-desc">
+                            Implemented <strong>throttling</strong>. The server tracks the last update time and only
+                            pushes progress events max once every 200ms.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Row: 2 Items (Wider) -->
+            <div class="row-bottom">
+                <!-- 4. DB Contention -->
+                <div class="challenge-card">
+                    <div class="card-header">
+                        <div class="icon-box accent-db">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
+                        <h3 class="title-text">Database Contention</h3>
+                    </div>
+                    <div class="section-block">
+                        <div class="section-label label-problem">
+                            <i class="fa-solid fa-circle-exclamation"></i> The Challenge
+                        </div>
+                        <p class="section-desc">
+                            Writing transfer progress to PostgreSQL after every chunk created massive disk I/O, slowing
+                            down the actual file write operation.
+                        </p>
+                        <div class="section-label label-solution">
+                            <i class="fa-solid fa-check"></i> The Fix
+                        </div>
+                        <p class="section-desc">
+                            <strong>In-Memory Buffer with Flush:</strong> Progress is tracked in a Go struct in memory
+                            and only flushed to the database on completion or pause.
+                        </p>
+                    </div>
+                </div>
+                <!-- 5. Large Files -->
+                <div class="challenge-card">
+                    <div class="card-header">
+                        <div class="icon-box accent-file">
+                            <i class="fa-solid fa-file-video"></i>
+                        </div>
+                        <h3 class="title-text">Large File Handling</h3>
+                    </div>
+                    <div class="section-block">
+                        <div class="section-label label-problem">
+                            <i class="fa-solid fa-circle-exclamation"></i> The Challenge
+                        </div>
+                        <p class="section-desc">
+                            Attempting to read whole files into memory caused crashes with files &gt; 2GB (RAM
+                            exhaustion).
+                        </p>
+                        <div class="section-label label-solution">
+                            <i class="fa-solid fa-check"></i> The Fix
+                        </div>
+                        <p class="section-desc">
+                            Strictly enforced <strong>streaming architecture</strong> using <span
+                                class="code-pill">io.CopyBuffer</span>. RAM usage is now constant (~64KB) regardless of
+                            file size.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

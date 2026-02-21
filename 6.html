@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Transfer Process: 4-Stage Overview</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0d1117;
+            padding: 50px 70px;
+            box-sizing: border-box;
+        }
+
+        /* Background Grid Pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 0L1 40' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3Cpath d='M0 1L40 1' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+        }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 20px;
+        }
+
+        .section-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            color: #58a6ff;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .main-title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin: 0;
+        }
+
+        /* Process Container */
+        .process-flow {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 20px;
+            flex: 1;
+            padding-top: 20px;
+        }
+
+        /* Step Card */
+        .step-card {
+            flex: 1;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: transform 0.2s, border-color 0.2s;
+            overflow: hidden;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            border-color: #8b949e;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Step Number Watermark */
+        .step-number {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 80px;
+            font-weight: 800;
+            opacity: 0.05;
+            color: #ffffff;
+            font-family: 'IBM Plex Mono', monospace;
+            line-height: 1;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Icon Container */
+        .icon-container {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            z-index: 1;
+            border: 1px solid transparent;
+        }
+
+        .step-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin-bottom: 8px;
+            z-index: 1;
+        }
+
+        .step-alias {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            opacity: 0.8;
+            z-index: 1;
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .step-desc {
+            font-size: 14px;
+            color: #8b949e;
+            line-height: 1.6;
+            margin: 0;
+            z-index: 1;
+            flex-grow: 1;
+        }
+
+        .tech-detail {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px dashed #30363d;
+            font-size: 13px;
+            font-family: 'IBM Plex Mono', monospace;
+            z-index: 1;
+        }
+
+        /* Colors */
+        /* Stage 1: Discovery (Yellow) */
+        .stage-1 .icon-container {
+            background-color: rgba(210, 153, 34, 0.1);
+            color: #d29922;
+            border-color: rgba(210, 153, 34, 0.2);
+        }
+
+        .stage-1 .step-alias {
+            color: #d29922;
+        }
+
+        .stage-1 .tech-detail {
+            color: #d29922;
+        }
+
+        .stage-1:hover {
+            border-color: #d29922;
+        }
+
+        /* Stage 2: Handshake (Blue) */
+        .stage-2 .icon-container {
+            background-color: rgba(88, 166, 255, 0.1);
+            color: #58a6ff;
+            border-color: rgba(88, 166, 255, 0.2);
+        }
+
+        .stage-2 .step-alias {
+            color: #58a6ff;
+        }
+
+        .stage-2 .tech-detail {
+            color: #58a6ff;
+        }
+
+        .stage-2:hover {
+            border-color: #58a6ff;
+        }
+
+        /* Stage 3: Decision (Purple) */
+        .stage-3 .icon-container {
+            background-color: rgba(210, 168, 255, 0.1);
+            color: #d2a8ff;
+            border-color: rgba(210, 168, 255, 0.2);
+        }
+
+        .stage-3 .step-alias {
+            color: #d2a8ff;
+        }
+
+        .stage-3 .tech-detail {
+            color: #d2a8ff;
+        }
+
+        .stage-3:hover {
+            border-color: #d2a8ff;
+        }
+
+        /* Stage 4: Streaming (Green) */
+        .stage-4 .icon-container {
+            background-color: rgba(63, 185, 80, 0.1);
+            color: #3fb950;
+            border-color: rgba(63, 185, 80, 0.2);
+        }
+
+        .stage-4 .step-alias {
+            color: #3fb950;
+        }
+
+        .stage-4 .tech-detail {
+            color: #3fb950;
+        }
+
+        .stage-4:hover {
+            border-color: #3fb950;
+        }
+
+        /* Arrows between cards */
+        .arrow-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            color: #30363d;
+            font-size: 20px;
+        }
+
+        /* Bottom Legend/Hint */
+        .bottom-hint {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #8b949e;
+            font-size: 14px;
+            background-color: rgba(22, 27, 34, 0.5);
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <div class="header">
+            <p class="section-tag">System Workflow</p>
+            <h1 class="main-title">Transfer Process: 4-Stage Overview</h1>
+        </div>
+        <!-- Process Diagram -->
+        <div class="process-flow">
+            <!-- Stage 1 -->
+            <div class="step-card stage-1">
+                <div class="step-number">01</div>
+                <div class="icon-container">
+                    <i class="fa-solid fa-satellite-dish"></i>
+                </div>
+                <p class="step-alias">The Radar</p>
+                <h3 class="step-title">Discovery</h3>
+                <p class="step-desc">
+                    Peers broadcast presence to the local network to find each other automatically.
+                </p>
+                <div class="tech-detail">
+                    <i class="fa-solid fa-code"></i> UDP Multicast
+                </div>
+            </div>
+            <!-- Arrow -->
+            <div class="arrow-divider">
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+            <!-- Stage 2 -->
+            <div class="step-card stage-2">
+                <div class="step-number">02</div>
+                <div class="icon-container">
+                    <i class="fa-solid fa-handshake"></i>
+                </div>
+                <p class="step-alias">The Request</p>
+                <h3 class="step-title">Handshake</h3>
+                <p class="step-desc">
+                    Sender initiates connection and sends file metadata (name, size, ID).
+                </p>
+                <div class="tech-detail">
+                    <i class="fa-solid fa-code"></i> TCP + JSON
+                </div>
+            </div>
+            <!-- Arrow -->
+            <div class="arrow-divider">
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+            <!-- Stage 3 -->
+            <div class="step-card stage-3">
+                <div class="step-number">03</div>
+                <div class="icon-container">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <p class="step-alias">The Gatekeeper</p>
+                <h3 class="step-title">Decision</h3>
+                <p class="step-desc">
+                    Receiver gets a prompt. Connection is held open until accepted or rejected.
+                </p>
+                <div class="tech-detail">
+                    <i class="fa-solid fa-code"></i> User Interaction
+                </div>
+            </div>
+            <!-- Arrow -->
+            <div class="arrow-divider">
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+            <!-- Stage 4 -->
+            <div class="step-card stage-4">
+                <div class="step-number">04</div>
+                <div class="icon-container">
+                    <i class="fa-solid fa-forward-fast"></i>
+                </div>
+                <p class="step-alias">The Highway</p>
+                <h3 class="step-title">Streaming</h3>
+                <p class="step-desc">
+                    File data flows in chunks directly to the Downloads folder with live progress.
+                </p>
+                <div class="tech-detail">
+                    <i class="fa-solid fa-code"></i> TCP Stream (64KB)
+                </div>
+            </div>
+        </div>
+        <!-- Bottom Hint -->
+        <div class="bottom-hint">
+            <i class="fa-solid fa-lightbulb" style="color: #e3b341;"></i>
+            <p>
+                The separation of <strong>Discovery (UDP)</strong> and <strong>Transfer (TCP)</strong> ensures that
+                heavy file transfers don't clog the discovery channel.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

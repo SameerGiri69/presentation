@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Thank You & Q&A</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            overflow: hidden;
+            width: 1280px;
+            height: 720px;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0d1117;
+            overflow: hidden;
+        }
+
+        /* Background Grid */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.1;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 0L1 60' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3Cpath d='M0 1L60 1' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px;
+        }
+
+        .title {
+            font-size: 84px;
+            font-weight: 800;
+            line-height: 1.1;
+            color: #f0f6fc;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+            text-shadow: 0 0 60px rgba(88, 166, 255, 0.3);
+        }
+
+        .subtitle {
+            font-size: 32px;
+            color: #8b949e;
+            font-weight: 300;
+            margin-bottom: 64px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .contact-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            transition: transform 0.2s, border-color 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            border-color: #58a6ff;
+            background-color: #1c2128;
+        }
+
+        .icon-wrapper {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .email-icon {
+            background-color: rgba(255, 123, 114, 0.1);
+            color: #ff7b72;
+        }
+
+        .github-icon {
+            background-color: rgba(163, 113, 247, 0.1);
+            color: #a371f7;
+        }
+
+        .card-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 14px;
+            text-transform: uppercase;
+            color: #8b949e;
+            letter-spacing: 1px;
+        }
+
+        .card-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f0f6fc;
+        }
+
+        .repo-link {
+            font-family: 'IBM Plex Mono', monospace;
+            color: #58a6ff;
+            font-size: 16px;
+        }
+
+        /* Decorative Glow */
+        .glow-orb {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(88, 166, 255, 0.1), transparent 70%);
+            z-index: 1;
+            filter: blur(50px);
+            bottom: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <div class="glow-orb"></div>
+        <div class="content-wrapper">
+            <h1 class="title">Thank You</h1>
+            <p class="subtitle">Any Questions?</p>
+
+            <div class="contact-grid">
+                <!-- Email -->
+                <a href="mailto:sameergiri153000@gmail.com" class="contact-card">
+                    <div class="icon-wrapper email-icon">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <span class="card-label">Email</span>
+                    <span class="card-value">sameergiri153000@gmail.com</span>
+                </a>
+
+                <!-- GitHub -->
+                <a href="https://github.com/SameerGiri69/FileTransferSystem" target="_blank" class="contact-card">
+                    <div class="icon-wrapper github-icon">
+                        <i class="fa-brands fa-github"></i>
+                    </div>
+                    <span class="card-label">Repository</span>
+                    <span class="repo-link">github.com/SameerGiri69/FileTransferSystem</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

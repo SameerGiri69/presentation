@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Real-time Features: WebSockets</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0d1117;
+            padding: 40px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Background Grid Pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 0L1 40' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3Cpath d='M0 1L40 1' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .section-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            color: #ff7b72;
+            /* Red/Pink accent for Live/Hot features */
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: inline-block;
+            background-color: rgba(255, 123, 114, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 123, 114, 0.2);
+        }
+
+        .main-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Content Layout */
+        .content-wrapper {
+            display: flex;
+            gap: 40px;
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            height: 100%;
+        }
+
+        /* Left Column: Visual Diagram */
+        .col-left {
+            flex: 3;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .diagram-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .diagram-node {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            z-index: 2;
+        }
+
+        .node-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-size: 18px;
+        }
+
+        .server-node .node-icon {
+            background-color: rgba(56, 139, 253, 0.15);
+            color: #58a6ff;
+        }
+
+        .client-node .node-icon {
+            background-color: rgba(235, 151, 78, 0.15);
+            color: #d29922;
+        }
+
+        .node-label {
+            color: #e6edf3;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .node-sub {
+            color: #8b949e;
+            font-size: 12px;
+        }
+
+        /* Flow Lines */
+        .flow-line-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 10px 0 10px 28px;
+            /* Align with icons */
+            border-left: 2px dashed #30363d;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .flow-event {
+            background-color: rgba(56, 139, 253, 0.1);
+            border: 1px solid rgba(56, 139, 253, 0.2);
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: #58a6ff;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: fit-content;
+        }
+
+        .flow-arrow {
+            color: #8b949e;
+            font-size: 10px;
+        }
+
+        /* Live Progress Bar Simulation */
+        .progress-simulation {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #30363d;
+        }
+
+        .sim-label {
+            font-size: 12px;
+            color: #8b949e;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-track {
+            height: 8px;
+            background-color: #21262d;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #3fb950;
+            width: 46%;
+            /* Static for snapshot */
+            border-radius: 4px;
+        }
+
+        .speed-stat {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: #8b949e;
+            text-align: right;
+        }
+
+        /* Right Column: Explanation */
+        .col-right {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .info-card {
+            background-color: rgba(22, 27, 34, 0.6);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .info-title {
+            color: #f0f6fc;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-desc {
+            color: #8b949e;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Code Block */
+        .code-block {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: #c9d1d9;
+            overflow-x: auto;
+        }
+
+        .token-key {
+            color: #79c0ff;
+        }
+
+        .token-num {
+            color: #d2a8ff;
+        }
+
+        .token-str {
+            color: #a5d6ff;
+        }
+
+        .token-bool {
+            color: #ff7b72;
+        }
+
+        .token-comment {
+            color: #8b949e;
+            font-style: italic;
+        }
+
+        .highlight-badge {
+            display: inline-block;
+            background-color: #238636;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+
+        /* Feature List */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .feature-icon {
+            color: #3fb950;
+            font-size: 16px;
+            margin-top: 3px;
+        }
+
+        .feature-text h4 {
+            color: #e6edf3;
+            font-size: 14px;
+            margin: 0 0 4px 0;
+            font-weight: 600;
+        }
+
+        .feature-text p {
+            color: #8b949e;
+            font-size: 12px;
+            margin: 0;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <div class="header">
+            <div class="header-content">
+                <span class="section-tag">Live Updates</span>
+                <h1 class="main-title">
+                    Real-time Features
+                </h1>
+            </div>
+        </div>
+        <div class="content-wrapper">
+            <!-- Left Panel: Visual Flow -->
+            <div class="col-left">
+                <h3 class="info-title" style="font-size: 16px; margin-bottom: 20px;">
+                    <i class="fa-solid fa-diagram-project" style="color: #79c0ff;"></i>
+                    WebSocket Event Flow
+                </h3>
+                <div class="diagram-container">
+                    <!-- Server Node -->
+                    <div class="diagram-node server-node">
+                        <div class="node-icon">
+                            <i class="fa-brands fa-golang"></i>
+                        </div>
+                        <div>
+                            <div class="node-label">Go Backend</div>
+                            <div class="node-sub">Event Emitter</div>
+                        </div>
+                    </div>
+                    <!-- Flow -->
+                    <div class="flow-line-container">
+                        <div class="flow-event">
+                            <i class="fa-solid fa-arrow-down flow-arrow"></i>
+                            <span>{"type": "peer_found", ...}</span>
+                        </div>
+                        <div class="flow-event">
+                            <i class="fa-solid fa-arrow-down flow-arrow"></i>
+                            <span>{"type": "transfer_req", ...}</span>
+                        </div>
+                        <div class="flow-event"
+                            style="background-color: rgba(63, 185, 80, 0.1); border-color: rgba(63, 185, 80, 0.2); color: #3fb950;">
+                            <i class="fa-solid fa-arrow-down flow-arrow"></i>
+                            <span>{"type": "progress", "pct": 46}</span>
+                        </div>
+                    </div>
+                    <!-- Client Node -->
+                    <div class="diagram-node client-node">
+                        <div class="node-icon">
+                            <i class="fa-brands fa-js"></i>
+                        </div>
+                        <div>
+                            <div class="node-label">Web Browser</div>
+                            <div class="node-sub">Event Listener</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Simulated UI -->
+                <div class="progress-simulation">
+                    <div class="sim-label">
+                        <span>Client UI Render</span>
+                        <span style="color: #3fb950; font-weight: 600;">Active</span>
+                    </div>
+                    <div class="sim-label" style="margin-bottom: 4px;">
+                        <span>Video.mp4</span>
+                        <span>46%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="speed-stat">45 MB / 100 MB • 12 MB/s</div>
+                </div>
+            </div>
+            <!-- Right Panel: Technical Details -->
+            <div class="col-right">
+                <!-- Core Concept -->
+                <div class="info-card">
+                    <h2 class="info-title">
+                        <i class="fa-solid fa-plug-circle-bolt" style="color: #e3b341;"></i>
+                        Persistent Connection
+                    </h2>
+                    <p class="info-desc">
+                        Unlike traditional HTTP polling, WebSockets allow the server to push data to the client
+                        instantly. This is critical for smooth progress bars and immediate peer discovery notifications.
+                    </p>
+                </div>
+                <!-- Payload Structure -->
+                <div class="info-card" style="flex: 1; display: flex; flex-direction: column;">
+                    <h3 class="info-title" style="font-size: 16px;">
+                        <i class="fa-solid fa-code" style="color: #a5d6ff;"></i>
+                        Progress Payload Structure
+                    </h3>
+                    <div class="code-block" style="flex: 1;">
+                        <span class="token-comment">// Server pushes this every ~200ms during transfer</span>
+                        {
+                        <span class="token-key">"type"</span>: <span class="token-str">"progress"</span>,
+                        <span class="token-key">"payload"</span>: {
+                        <span class="token-key">"transferId"</span>: <span class="token-str">"550e8400..."</span>,
+                        <span class="token-key">"bytesSent"</span>: <span class="token-num">47185920</span>,
+                        <span class="token-key">"totalBytes"</span>: <span class="token-num">104857600</span>,
+                        <span class="token-key">"percent"</span>: <span class="token-num">45.5</span>,
+                        <span class="token-key">"speed"</span>: <span class="token-str">"12.5 MB/s"</span>
+                        }
+                        }
+                    </div>
+                </div>
+                <!-- Benefits Grid -->
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fa-solid fa-stopwatch feature-icon"></i>
+                        <div class="feature-text">
+                            <h4>Low Latency</h4>
+                            <p>Instant updates with &lt;10ms overhead per message.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-server feature-icon"></i>
+                        <div class="feature-text">
+                            <h4>Low Overhead</h4>
+                            <p>Single TCP connection re-used for all events.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

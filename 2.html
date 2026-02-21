@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Project Overview &amp; Motivation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            overflow: hidden;
+            width: 1280px;
+            height: 720px;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0d1117;
+            padding: 40px 80px;
+            box-sizing: border-box;
+        }
+
+        /* Decorative Background */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(48, 54, 61, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(48, 54, 61, 0.2) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Layout */
+        .header {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 15px;
+        }
+
+        .section-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            color: #58a6ff;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .main-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin: 0;
+        }
+
+        .content-area {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+            justify-content: center;
+            min-height: 0;
+        }
+
+        /* Feature Cards */
+        .feature-row {
+            display: flex;
+            align-items: flex-start;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .feature-row:hover {
+            border-color: #58a6ff;
+            transform: translateX(5px);
+        }
+
+        .icon-box {
+            flex-shrink: 0;
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 24px;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .text-content {
+            flex: 1;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f0f6fc;
+            margin-bottom: 6px;
+        }
+
+        .feature-desc {
+            font-size: 16px;
+            color: #8b949e;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Color Themes for Rows */
+        .row-problem .icon-box {
+            color: #ff7b72;
+            background-color: rgba(255, 123, 114, 0.1);
+            border: 1px solid rgba(255, 123, 114, 0.2);
+        }
+
+        .row-goal .icon-box {
+            color: #3fb950;
+            background-color: rgba(63, 185, 80, 0.1);
+            border: 1px solid rgba(63, 185, 80, 0.2);
+        }
+
+        .row-approach .icon-box {
+            color: #58a6ff;
+            background-color: rgba(88, 166, 255, 0.1);
+            border: 1px solid rgba(88, 166, 255, 0.2);
+        }
+
+        .row-philosophy .icon-box {
+            color: #d2a8ff;
+            background-color: rgba(210, 168, 255, 0.1);
+            border: 1px solid rgba(210, 168, 255, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <div class="header">
+            <p class="section-tag">Context &amp; Strategy</p>
+            <h1 class="main-title">Project Overview &amp; Motivation</h1>
+        </div>
+        <div class="content-area">
+            <!-- Problem -->
+            <div class="feature-row row-problem">
+                <div class="icon-box">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div class="text-content">
+                    <p class="feature-title">The Problem</p>
+                    <p class="feature-desc">Moving large files on LAN is clumsy. USB drives require physical swapping,
+                        chat apps compress media, and cloud solutions waste bandwidth on round-trips.</p>
+                </div>
+            </div>
+            <!-- Goal -->
+            <div class="feature-row row-goal">
+                <div class="icon-box">
+                    <i class="fa-solid fa-bullseye"></i>
+                </div>
+                <div class="text-content">
+                    <p class="feature-title">The Goal</p>
+                    <p class="feature-desc">Create a fast, secure, local-only transfer system with real-time visibility.
+                        No internet required, no file size limits, and instant peer discovery.</p>
+                </div>
+            </div>
+            <!-- Approach -->
+            <div class="feature-row row-approach">
+                <div class="icon-box">
+                    <i class="fa-solid fa-network-wired"></i>
+                </div>
+                <div class="text-content">
+                    <p class="feature-title">The Approach</p>
+                    <p class="feature-desc">UDP Multicast for "Radar" discovery, TCP streaming for reliable chunked data
+                        transfer, and WebSockets for live progress updates.</p>
+                </div>
+            </div>
+            <!-- Philosophy -->
+            <div class="feature-row row-philosophy">
+                <div class="icon-box">
+                    <i class="fa-solid fa-feather-pointed"></i>
+                </div>
+                <div class="text-content">
+                    <p class="feature-title">The Philosophy</p>
+                    <p class="feature-desc">"Minimal Dependencies." Built primarily with standard Go packages (net, io,
+                        context) to ensure a lightweight footprint and easy deployment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

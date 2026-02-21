@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Tech Stack</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            width: 1280px;
+            height: 720px;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #0d1117;
+            padding: 60px 80px;
+            box-sizing: border-box;
+        }
+
+        /* Background Pattern - Simple Grid */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.2;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 0L1 40' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3Cpath d='M0 1L40 1' stroke='%2330363d' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+        }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 20px;
+        }
+
+        .section-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            color: #58a6ff;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .main-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin: 0;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Column Headers */
+        .col-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 4px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #21262d;
+        }
+
+        .col-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f0f6fc;
+            margin: 0;
+        }
+
+        .col-icon {
+            font-size: 20px;
+        }
+
+        /* Tech Cards */
+        .tech-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .tech-card:hover {
+            border-color: #8b949e;
+        }
+
+        .card-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e6edf3;
+            margin: 0 0 4px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: #8b949e;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .tag-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            background-color: #21262d;
+            color: #79c0ff;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(56, 139, 253, 0.2);
+            font-weight: 500;
+        }
+
+        /* Specific Colors */
+        .backend-icon {
+            color: #00ADD8;
+            background-color: rgba(0, 173, 216, 0.1);
+        }
+
+        .db-icon {
+            color: #336791;
+            background-color: rgba(51, 103, 145, 0.1);
+        }
+
+        .ws-icon {
+            color: #d2a8ff;
+            background-color: rgba(210, 168, 255, 0.1);
+        }
+
+        .js-icon {
+            color: #F7DF1E;
+            background-color: rgba(247, 223, 30, 0.1);
+        }
+
+        .html-icon {
+            color: #E34F26;
+            background-color: rgba(227, 79, 38, 0.1);
+        }
+
+        .font-icon {
+            color: #ea4335;
+            background-color: rgba(234, 67, 53, 0.1);
+        }
+
+        /* Footer Philosophy Section */
+        .philosophy-bar {
+            margin-top: auto;
+            background-color: rgba(56, 139, 253, 0.05);
+            border: 1px dashed #30363d;
+            border-radius: 8px;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .philosophy-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            color: #58a6ff;
+            text-transform: uppercase;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .philosophy-text {
+            color: #8b949e;
+            font-size: 14px;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="bg-grid"></div>
+        <div class="header">
+            <p class="section-tag">Infrastructure &amp; UI</p>
+            <h1 class="main-title">Technology Stack</h1>
+        </div>
+        <div class="content-wrapper">
+            <!-- Backend Column -->
+            <div class="col">
+                <div class="col-header">
+                    <i class="fa-solid fa-server col-icon" style="color: #58a6ff;"></i>
+                    <h2 class="col-title">Backend Infrastructure (Go)</h2>
+                </div>
+                <!-- Go Card -->
+                <div class="tech-card">
+                    <div class="card-icon backend-icon">
+                        <i class="fa-brands fa-golang"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Go (Golang)</h3>
+                        <p class="card-desc">Core server logic handling concurrency, file I/O, and networking.</p>
+                        <div class="tag-row">
+                            <span class="tech-tag">net/http</span>
+                            <span class="tech-tag">io</span>
+                            <span class="tech-tag">context</span>
+                            <span class="tech-tag">encoding/json</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- DB Card -->
+                <div class="tech-card">
+                    <div class="card-icon db-icon">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">PostgreSQL</h3>
+                        <p class="card-desc">Robust relational storage for user accounts and transfer logs.</p>
+                        <div class="tag-row">
+                            <span class="tech-tag">lib/pq</span>
+                            <span class="tech-tag">Transactions</span>
+                            <span class="tech-tag">Metadata</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- WebSocket Card -->
+                <div class="tech-card">
+                    <div class="card-icon ws-icon">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Gorilla WebSocket</h3>
+                        <p class="card-desc">Bi-directional channel for real-time progress bars and peer detection.</p>
+                        <div class="tag-row">
+                            <span class="tech-tag">Push Events</span>
+                            <span class="tech-tag">Low Latency</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Frontend Column -->
+            <div class="col">
+                <div class="col-header">
+                    <i class="fa-solid fa-desktop col-icon" style="color: #3fb950;"></i>
+                    <h2 class="col-title">Frontend Web UI</h2>
+                </div>
+                <!-- Vanilla JS Card -->
+                <div class="tech-card">
+                    <div class="card-icon js-icon">
+                        <i class="fa-brands fa-js"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Vanilla JavaScript</h3>
+                        <p class="card-desc">Zero-dependency client logic for maximum performance and speed.</p>
+                        <div class="tag-row">
+                            <span class="tech-tag">ES6 Modules</span>
+                            <span class="tech-tag">DOM API</span>
+                            <span class="tech-tag">Fetch API</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- HTML/CSS Card -->
+                <div class="tech-card">
+                    <div class="card-icon html-icon">
+                        <i class="fa-brands fa-html5"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">HTML5 &amp; CSS3</h3>
+                        <p class="card-desc">Semantic structure with modern, responsive styling.</p>
+                        <div class="tag-row">
+                            <span class="tech-tag">Flexbox</span>
+                            <span class="tech-tag">Grid Layout</span>
+                            <span class="tech-tag">CSS Variables</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fonts/Assets Card -->
+                <div class="tech-card">
+                    <div class="card-icon font-icon">
+                        <i class="fa-solid fa-font"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Google Fonts</h3>
+                        <p class="card-desc">Modern typography optimized for screen readability.</p>
+                        <div class="tag-row">
+                            <span class="tech-tag">Inter (UI)</span>
+                            <span class="tech-tag">IBM Plex Mono (Code)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bottom Philosophy Bar -->
+        <div class="philosophy-bar">
+            <div class="philosophy-title">
+                <i class="fa-solid fa-layer-group" style="margin-right: 8px;"></i>
+                Design Philosophy
+            </div>
+            <p class="philosophy-text">
+                <strong>Minimal Dependencies:</strong> The architecture prioritizes standard Go packages to reduce
+                binary size, minimize security risks, and simplify deployment.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
